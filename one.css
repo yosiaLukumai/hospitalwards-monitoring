@@ -1,0 +1,75 @@
+*,*::before, *::after
+{
+    margin: 0;
+    padding: 0;
+}
+
+body, html
+{
+    margin: 0;
+    padding: 0;
+}
+section.head
+{
+    text-align: center;
+    background-color: rgb(191, 198, 204);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+}
+
+section.head > img 
+{
+    display: inline-block;
+    max-width: 100%;
+    height: auto;
+}
+
+.styled
+{
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+}
+
+.one
+{
+    display: inline-block;
+    width: 70%;
+    opacity: 0.45;
+    
+}
+
+.holder
+{
+    position: relative;
+    text-align: center;
+}
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+
+.amazing
+{
+    font-size: xx-large;
+    font-weight: bolder;
+    color: rgb(8, 124, 60);
+}
+
+.wardStatus
+{
+    text-decoration: none;
+}
+
+
+.pop
+{
+    color: rgb(104, 36, 104);
+    font-weight: bolder;
+}

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="one.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@1,200&display=swap" rel="stylesheet">
+    <title>Smart Patient Monitoring system</title>
+</head>
+
+<body>
+    <section class="head">
+      <div>
+        <img src="./icons8-health-flaticons-lineal-color-32.png" alt="">
+        <span style="font-weight: bolder;">Health</span>
+      </div>
+       
+        <h3 style="color: rgb(8, 124, 60);">Smart Patient Monitoring sytem</h3>
+    </section>
+
+    <div class="container">
+        <div class="card mt-3">
+            <h5 class="card-header" style="font-weight: bolder; text-align: center; color: rgb(8, 124, 60);">Real  Time Monitoring</h5>
+            <div class="card-body">
+                    <div class="row "  style="text-align: center; font-weight: bold;">
+                      <div class="col styled">
+                        BPM REadings
+                        <div class="holder">
+                          <img src="./icons8-heart-monitor-80.png" class="one" alt="">
+                          <div class="centered">
+                            <span class="amazing" id="datad"></span> 
+                          </div>
+                        </div>
+    
+                      </div>
+                      <div class="col styled">
+                        Empty Rooms
+                        <div class="holder">
+                          <img src="./icons8-bed-80.png" alt="" class="one">
+                          <div class="centered">
+                            <span class="amazing" id="emptys"></span> 
+                          </div>
+                        </div>
+                        <div class="wards">
+                          <div class="wardOne">
+                            <h5 style="text-decoration: underline;">Ward One</h5>
+                            <div class="wardStatus" >
+                              <div>
+                              <h6 style="text-decoration: none;">BedOne Status:<span class="pop" id="w1One"></span></h6>
+                              </div>
+                              <div>
+                                <h6 style="text-decoration: none;">bedTwo Status: <span class="pop" id="w1Two"></span></h6>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="col styled">
+                        Occupied Rooms
+                        <div class="holder">
+                          <img src="./icons8-being-sick-80.png" alt="" class="one">
+                          <div class="centered">
+                            <span class="amazing" id="occupieded"></span> 
+                          </div>
+                        </div>
+                        <div class="wards">
+                          <div class="wardTwo">
+                            <h5 style="text-decoration: underline;">Ward Two</h5>
+                            <div class="wardStatus">
+                              <div>
+                              <h6>BedOne Status: <span class="pop" id="w2One"></span></h6>
+                              </div>
+                              <div>
+                                <h6>bedTwo Status: <span class="pop" id="w2Two"></span></h6>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+            </div>
+            <div class="card-footer text-dark" style="text-align: center;">
+               <span style="font-weight: bolder; font-family:cursive;">Powered by @Yel </span>             
+            </div>
+          </div>
+    </div>
+
+
+    <script>  
+      function loadData()
+      {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "https://api.thingspeak.com/channels/1767262/feeds.json?api_key=QIR91TPF5768N5C7&results=1", true)
+        xhr.onload = function ()
+        {
+          if(this.status == 200)
+          {
+            let occupiedRooms = 0
+            let emptyRooms = 0
+
+            var data = JSON.parse(this.responseText)
+            var empty = document.getElementById('emptys')
+            var occupied = document.getElementById('occupieded')
+            var bpm = document.getElementById('datad')
+            var w1One = document.getElementById("w1One")
+            var w1Two = document.getElementById("w1Two")
+            var w2One = document.getElementById("w2One")
+            var w2Two = document.getElementById("w2Two")
+            console.log(data)
+            data = data.feeds[0]
+            bpm.innerHTML = data.field1
+            console.log(data.field1, data.field2)
+            // lef find the data for occupied rooms
+            console.log(typeof(parseInt(data.field2)))
+            if(parseInt(data.field2))
+            {
+              occupiedRooms = occupiedRooms + 1
+              w1One.innerHTML = "Occupied"
+            }
+            else{
+              emptyRooms = emptyRooms + 1
+              w1One.innerHTML = "Empty"
+            }
+            if(parseInt(data.field3))
+            {
+              occupiedRooms = occupiedRooms + 1
+              w1Two.innerHTML = "Occupied"
+            }
+            else{
+              emptyRooms = emptyRooms + 1
+              w1Two.innerHTML = "Empty"
+            }
+            if(parseInt(data.field4))
+            {
+              occupiedRooms = occupiedRooms + 1
+              w2One.innerHTML = "Occupied"
+            }
+            else{
+              emptyRooms = emptyRooms + 1
+              w2One.innerHTML = "Empty"
+            }
+            if(parseInt(data.field5))
+            {
+              occupiedRooms = occupiedRooms + 1
+              w2Two.innerHTML = "Occupied"
+            }
+            else{
+              emptyRooms = emptyRooms + 1
+              w2Two.innerHTML = "Empty"
+            }
+
+            empty.innerHTML = emptyRooms;
+            occupied.innerHTML = occupiedRooms
+
+
+          }
+        }
+        xhr.onerror = function()
+        {
+          console.log("Request error")
+        }
+        xhr.send()
+      }
+
+      
+      setInterval(loadData, 5000)
+    </script>
+    
+</body>
+
+</html>
